@@ -11,3 +11,17 @@ def view_tasks():
     
     tasks = Task.query.all()
     return render_template('tasks.html', tasks=tasks)
+
+@tasks_bp.route('/add', methods=["POST"])
+def add_task():
+    if 'user' not in session:
+        return redirect(url_for('auth.login'))
+    
+    title = request.form.get('title')
+    if title:
+        new_task = Task(title=title, status='Pending')
+        db.session.add(new_task)
+        db.session.commit()
+        flash('Task added successfully', 'success')
+
+        return redirect(url_for('tasks.view_tasks'))
