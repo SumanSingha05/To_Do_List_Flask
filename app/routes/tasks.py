@@ -25,3 +25,23 @@ def add_task():
         flash('Task added successfully', 'success')
 
         return redirect(url_for('tasks.view_tasks'))
+    
+@tasks_bp.route('/toggle/<int:task_id', methods=["POST"])
+def toggle_status(task_id):
+    task = Task.query.get(task_id)
+    if task:
+        if task.status == 'Pending':
+            task.status == 'Working'
+        elif task.status == 'Working':
+            task.status == 'Done'
+        else:
+            task.status == 'Pending'
+        db.session.commit()
+    return redirect(url_for('tasks.view_tasks'))
+
+@tasks_bp.route('/clear', methods=["POST"])
+def clear_task():
+    Task.query.delete()
+    db.session.commit()
+    flash('All tasks cleared!', 'info')
+    return redirect(url_for('tasks.view_tasks'))
