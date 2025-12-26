@@ -21,3 +21,8 @@ def login():
 
     return render_template('login.html')
 
+@auth_bp.route('/logout')
+def logout():
+    session.pop('user', None)
+    flash('Logged out', 'info')
+    return redirect(url_for('auth.login'))
