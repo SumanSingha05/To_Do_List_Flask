@@ -14,8 +14,9 @@ def login():
         password = request.form.get('password')
 
         if username == USER_CREDENTIALS['username'] and password == USER_CREDENTIALS['password']:
-            session['user'] == username
+            session['user'] = username
             flash('Login Successful', 'success')
+            return redirect(url_for('tasks.view_tasks'))
         else:
             flash('Invalid username or password', 'danger')
 
